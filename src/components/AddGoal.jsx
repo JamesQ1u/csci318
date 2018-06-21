@@ -11,8 +11,10 @@ class AddGoal extends Component {
     constructor(props){
         super(props);
         this.state = {
-            goal:'',
-            date: moment()
+            amount: '',
+            date: moment(),
+            category: '',
+            description: ''
 
         }
         this.user = firebaseApp.auth().currentUser;
@@ -22,11 +24,17 @@ class AddGoal extends Component {
         this.setState({date: date});
     }
 
+    categoryChange(event){
+        this.setState({category: event.target.value});
+    }
+
     addGoal(state){
         const uid = this.user.uid;
         db.collection("user").doc(uid).set({
-            goal: this.state.goal,
-            date: new Date(this.state.date)
+            amount: this.state.amount,
+            date: new Date(this.state.date),
+            category: this.state.category,
+            description: this.state.description
         })
     }
 
@@ -34,12 +42,13 @@ class AddGoal extends Component {
         return (
             <div className="form-inline">
                 <div className="form-group">
+                Amount:
                     <input
                         type="text"
-                        placeholder='Add a goal'
+                        placeholder='Add a amount'
                         className="form-control"
                         style={{marginRight: '5px'}}
-                        onChange={event => this.setState({goal: event.target.value})}
+                        onChange={event => this.setState({amount: event.target.value})}
                     />
                     <br/>
                 Date:
@@ -51,6 +60,28 @@ class AddGoal extends Component {
                         showYearDropdown
                         dropdownMode="select"
                         /><br/>
+                Expenses category:
+                <select id = "category" value={this.state.category} onChange={this.categoryChange.bind(this)}>
+                    <option value ="">Please select</option>
+                    <option value ="CarTruckExpenses">Car and Truck Expenses</option>
+                    <option value="EducationandTraining">Education and Training</option>
+                    <option value="Meals">Meals</option>
+                    <option value="Entertainment">Entertainment</option>
+                    <option value="OfficeExpenses">Office Expenses</option>
+                    <option value="Rent">Rent</option>
+                    <option value="Travel">Travel</option>
+                    <option value="Other">Other</option>
+                </select>
+                <br/>
+                Description:
+                    <input
+                        type="text"
+                        placeholder='Add a description'
+                        className="form-control"
+                        style={{marginRight: '5px'}}
+                        onChange={event => this.setState({description: event.target.value})}
+                    />
+                    <br/>
                     <button
                         className="btn btn-success"
                         type="button"

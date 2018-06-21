@@ -12,7 +12,7 @@ class App extends Component {
     render(){
         return (
             <div>
-                <h3> Goals</h3>
+                <h3> Day-to-Day expenses</h3>
                 <AddGoal />
                 <button
                  className="btn btn-danger"
