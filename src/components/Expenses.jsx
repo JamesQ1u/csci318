@@ -7,22 +7,22 @@ import moment from 'moment';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
-class Income extends Component {
+class Expenses extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            IncomeAmount: '',
+            ExpenseDate: moment(),
+            remark: '',
+            ExpenseCategory: '',
             BankAcc: [],
             Account: '',
-            IncomeCategory: '',
-            IncomeDate: moment(),
-            remark: ''
+            Amount: ''
         }
         this.uid = firebaseApp.auth().currentUser.uid;
         this.Ref = db.collection('user').doc(this.uid);
         this.getBankAcc();
         this.AccountChange = this.AccountChange.bind(this);
-        this.IncomeDateChange = this.IncomeDateChange.bind(this);
+        this.ExpenseDateChange = this.ExpenseDateChange.bind(this);
         this.CategoryChange = this.CategoryChange.bind(this);
     }
 
@@ -33,36 +33,36 @@ class Income extends Component {
         })
     }
 
+    ExpenseDateChange(date) {
+        this.setState({ ExpenseDate: date });
+    }
+
+    CategoryChange(event) {
+        this.setState({ ExpenseCategory: event.target.value });
+    }
+
     AccountChange(event) {
         this.setState({ Account: event.target.value });
     }
 
-    CategoryChange(event) {
-        this.setState({ IncomeCategory: event.target.value });
-    }
-
-    IncomeDateChange(date) {
-        this.setState({ IncomeDate: date });
-    }
-
-    income(state) {
+    expenses(state){
         if (this.state.Account === "Cash") {
             this.Ref.get().then(doc => {
                 const CashAmount = doc.data().Cash
                 const TotalAmount = doc.data().TotalAmount
                 this.Ref.update({
-                    TotalAmount: Number(Number(TotalAmount) + Number(this.state.IncomeAmount)),
-                    Cash: Number(Number(CashAmount) + Number(this.state.IncomeAmount))
+                    TotalAmount: Number(Number(TotalAmount) - Number(this.state.Amount)),
+                    Cash: Number(Number(CashAmount) - Number(this.state.Amount))
                 })
-                const date = this.state.IncomeDate.toString();
+                const date = this.state.ExpenseDate.toString();
                 this.Ref.collection('Record').doc(date).set({
-                    Type: 'Income',
-                    To: this.state.Account,
-                    IncomeAmount: Number(this.state.IncomeAmount),
-                    IncomeCategory: this.state.IncomeCategory,
+                    Type: 'Expense',
+                    From: this.state.Account,
+                    Amount: Number(this.state.Amount),
+                    ExpenseCategory: this.state.ExpenseCategory,
                     BeforeAmount: Number(CashAmount),
-                    AfterAmount: Number(Number(CashAmount) + Number(this.state.IncomeAmount)),
-                    ActionDate: new Date(this.state.IncomeDate),
+                    AfterAmount: Number(Number(CashAmount) - Number(this.state.Amount)),
+                    ActionDate: new Date(this.state.ExpenseDate),
                     Remark: this.state.remark
                 })
             })
@@ -72,20 +72,20 @@ class Income extends Component {
                 this.Ref.collection('Bank').doc(this.state.Account).get().then(doc => {
                     const BankAmount = doc.data().Amount
                     this.Ref.update({
-                        TotalAmount: Number(Number(TotalAmount) + Number(this.state.IncomeAmount)),
+                        TotalAmount: Number(Number(TotalAmount) - Number(this.state.Amount)),
                     })
                     this.Ref.collection('Bank').doc(this.state.Account).update({
-                        Amount: Number(Number(BankAmount) + Number(this.state.IncomeAmount)),
+                        Amount: Number(Number(BankAmount) - Number(this.state.Amount)),
                     })
-                    const date = this.state.IncomeDate.toString();
+                    const date = this.state.ExpenseDate.toString();
                     this.Ref.collection('Record').doc(date).set({
-                        Type: 'Income',
-                        To: this.state.Account,
-                        IncomeAmount: Number(this.state.IncomeAmount),
-                        IncomeCategory: this.state.IncomeCategory,
+                        Type: 'Expense',
+                        From: this.state.Account,
+                        Amount: Number(this.state.Amount),
+                        ExpenseCategory: this.state.ExpenseCategory,
                         BeforeAmount: Number(BankAmount),
-                        AfterAmount: Number(Number(BankAmount) + Number(this.state.IncomeAmount)),
-                        ActionDate: new Date(this.state.IncomeDate),
+                        AfterAmount: Number(Number(BankAmount) - Number(this.state.Amount)),
+                        ActionDate: new Date(this.state.ExpenseDate),
                         Remark: this.state.remark
                     })
                 })
@@ -98,7 +98,7 @@ class Income extends Component {
         return (
             <div>
                 <FormGroup>
-                    <ControlLabel>Income to:</ControlLabel>
+                    <ControlLabel>Money From:</ControlLabel>
                     <FormControl componentClass="select" value={this.state.Account} onChange={this.AccountChange}>
                         <option value="">Please Select</option>
                         <option value="Cash">Cash</option>
@@ -110,17 +110,30 @@ class Income extends Component {
                     <ControlLabel>Amount:(HKD$)</ControlLabel>
                     <InputGroup>
                         <InputGroup.Addon>$</InputGroup.Addon>
-                        <FormControl type="number" onChange={event => this.setState({ IncomeAmount: event.target.value })} />
+                        <FormControl type="number" onChange={event => this.setState({ Amount: event.target.value })} />
                     </InputGroup>
                 </FormGroup>
                 <FormGroup>
-                    <ControlLabel>Income Category:</ControlLabel>
-                    <FormControl componentClass="select" value={this.state.IncomeCategory} onChange={this.CategoryChange}>
+                    <ControlLabel>Expense Category:</ControlLabel>
+                    <FormControl componentClass="select" value={this.state.ExpenseCategory} onChange={this.CategoryChange}>
                         <option value="">Please Select</option>
-                        <option value="Salary">Salary</option>
-                        <option value="Bonus">Bonus</option>
+                        <option value="Food">Salary</option>
+                        <option value="Groceries">Bonus</option>
                         <option value="Investment">Investment</option>
-                        <option value="Sideline">Sideline</option>
+                        <option value="Transportation">Transportation</option>
+                        <option value="Utilities">Utilities</option>
+                        <option value="Phone">Phone</option>
+                        <option value="House">SHouse</option>
+                        <option value="Clothes">Clothes</option>
+                        <option value="Car">Car</option>
+                        <option value="Entertainment">Entertainment</option>
+                        <option value="Beauty">Beauty</option>
+                        <option value="Socializing">Socializing</option>
+                        <option value="Book">Book</option>
+                        <option value="Insurance">Insurance</option>
+                        <option value="Tex">Tex</option>
+                        <option value="Health">Health</option>
+                        <option value="Education">Education</option>
                         <option value="Other">Other</option>
                     </FormControl>
                 </FormGroup>
@@ -131,10 +144,10 @@ class Income extends Component {
                     </InputGroup>
                 </FormGroup>
                 <FormGroup>
-                    <ControlLabel>Income Date:</ControlLabel>
+                    <ControlLabel>Expense Date:</ControlLabel>
                     <DatePicker
-                        selected={this.state.IncomeDate}
-                        onChange={this.IncomeDateChange}
+                        selected={this.state.ExpenseDate}
+                        onChange={this.SelectDateChange}
                         showTimeSelect
                         timeFormat="HH:mm"
                         timeIntervals={15}
@@ -142,10 +155,9 @@ class Income extends Component {
                         timeCaption="time"
                     />
                 </FormGroup>
-
                 <Button
                     bsStyle="primary"
-                    onClick={() => this.income(this.state)}
+                    onClick={() => this.expenses(this.state)}
                 >
                     Submit
                     </Button>
@@ -155,4 +167,4 @@ class Income extends Component {
     }
 
 }
-export default Income;
+export default Expenses;

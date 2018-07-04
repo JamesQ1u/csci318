@@ -8,6 +8,7 @@ import AddBankAcc from './AddBankAcc';
 import BankWithdraw from './BankWithdraw';
 import BankTransfer from './BankTransfer';
 import Income from './Income';
+import Expenese from './Expenses';
 
 
 class App extends Component {
@@ -33,6 +34,8 @@ class App extends Component {
                 return (<BankTransfer />)
             }else if (showContent === 'Income') {
                 return (<Income />)
+            }else if (showContent === 'Expenese') {
+                return (<Expenese />)
             }
         }
     }
@@ -70,6 +73,12 @@ class App extends Component {
         this.setState({ showContent: 'Income' })
 
     }
+    
+    handleExpenese(){
+        this.setState({ showContent: 'Expenese' })
+
+    }
+
 
     signOut(){
         firebaseApp.auth().signOut();
@@ -97,11 +106,13 @@ class App extends Component {
                         <NavItem eventKey={3} onClick={() => this.handleIncome()}>
                         Income
                      </NavItem>       
-  
+                     <NavItem eventKey={4} onClick={() => this.handleExpenese()}>
+                        Expenese
+                     </NavItem> 
                     </Nav>
                     
                     <Nav pullRight>
-                        <NavItem eventKey={4} onClick={() => this.signOut()}>
+                        <NavItem eventKey={5} onClick={() => this.signOut()}>
                             Sign Out
                      </NavItem>
                     </Nav>

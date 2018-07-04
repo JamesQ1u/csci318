@@ -107,7 +107,7 @@ class BankTransfer extends Component {
 
     render() {
         return (
-            <div>
+            <div>                    
                  <FormGroup>
                     <ControlLabel>From Account:</ControlLabel>
                         <FormControl componentClass="select" placeholder="BankAcc" value={this.state.SelectedOutBankAcc} onChange={this.SelectOutBankAccChange}>
@@ -133,23 +133,23 @@ class BankTransfer extends Component {
                         </InputGroup>
                     </FormGroup>
                     <FormGroup>
-                        <ControlLabel>Transfer Date:</ControlLabel>
-                            <DatePicker
-                                selected={this.state.TransferDate}
-                                onChange={this.SelectDateChange}
-                                showTimeSelect
-                                timeFormat="HH:mm"
-                                timeIntervals={15}
-                                dateFormat="LLL"
-                                timeCaption="time"
-                            />
-                    </FormGroup> 
-                    <FormGroup>
                         <ControlLabel>Remarks:</ControlLabel>
                         <InputGroup>
                             <FormControl type="text" onChange={event => this.setState({ remark: event.target.value })} />
                         </InputGroup>
                     </FormGroup>
+                    <FormGroup>
+                     <ControlLabel>Transfer Date:</ControlLabel>
+                        <DatePicker
+                    selected={this.state.TransferDate}
+                    onChange={this.SelectDateChange}
+                    showTimeSelect
+                    timeFormat="HH:mm"
+                    timeIntervals={15}
+                    dateFormat="LLL"
+                    timeCaption="time"
+                    />
+                 </FormGroup> 
                     <Button
                         bsStyle="primary"
                         onClick={() => this.transfer(this.state)}
