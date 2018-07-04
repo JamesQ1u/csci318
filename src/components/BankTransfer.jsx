@@ -15,7 +15,8 @@ class BankTransfer extends Component {
             SelectedOutBankAcc: '',
             SelectedInBankAcc: '',
             TransferAmount: '',
-            TransferDate: moment()
+            TransferDate: moment(),
+            remark: ''
         }
         this.uid = firebaseApp.auth().currentUser.uid;
         this.Ref = db.collection('user').doc(this.uid);
@@ -36,7 +37,7 @@ class BankTransfer extends Component {
     }
 
     SelectDateChange(date){
-        this.setState({ WithdrawDate: date });
+        this.setState({ TransferDate: date });
     }
 
     getBankAcc(){
@@ -44,6 +45,63 @@ class BankTransfer extends Component {
             const BankAcc = coll.docs.map(doc => doc.id)
             this.setState({ BankAcc })
         })
+    }
+
+    transfer(state){
+        if(this.state.SelectedInBankAcc === "Other"){
+            this.Ref.collection('Bank').doc(this.state.SelectedOutBankAcc).get()
+            .then(doc => {
+                const BankAmount = doc.data().Amount
+                this.Ref.collection('Bank').doc(this.state.SelectedOutBankAcc).update({
+                    Amount: Number(BankAmount-this.state.TransferAmount)
+                })
+                const date = this.state.TransferDate.toString();
+            this.Ref.collection('Record').doc(date).set({
+                Type: 'BankTransfer',
+                FromAccount: this.state.SelectedOutBankAcc,
+                ToAccount: this.state.SelectedInBankAcc,
+                TransferAmount: Number(this.state.TransferAmount),
+                BeforeAmount: Number(BankAmount),
+                AfterAmount: Number(BankAmount-this.state.TransferAmount),
+                ActionDate: new Date(this.state.TransferDate),
+                Remark: this.state.remark
+            })
+            this.Ref.get().then(doc => {
+            const Amount = doc.data().TotalAmount
+            this.Ref.update({
+                TotalAmount: Number(Amount-this.state.TransferAmount)
+            })
+        })
+               
+            })
+        }else{
+            this.Ref.collection('Bank').doc(this.state.SelectedOutBankAcc).get()
+            .then(doc => {
+                const FromBankAmount = doc.data().Amount
+                this.Ref.collection('Bank').doc(this.state.SelectedInBankAcc).get()
+            .then(doc => {
+                const ToBankAmount = doc.data().Amount
+                this.Ref.collection('Bank').doc(this.state.SelectedOutBankAcc).update({
+                    Amount: Number(FromBankAmount-this.state.TransferAmount)
+                })
+                this.Ref.collection('Bank').doc(this.state.SelectedInBankAcc).update({
+                    Amount: Number(Number(ToBankAmount)+Number(this.state.TransferAmount))
+                })
+                const date = this.state.TransferDate.toString();
+                this.Ref.collection('Record').doc(date).set({
+                    Type: 'BankTransfer',
+                    FromAccount: this.state.SelectedOutBankAcc,
+                    ToAccount: this.state.SelectedInBankAcc,
+                    TransferAmount: Number(this.state.TransferAmount),
+                    BeforeAmount: Number(FromBankAmount),
+                    AfterAmount: Number(FromBankAmount-this.state.TransferAmount),
+                    ActionDate: new Date(this.state.TransferDate),
+                    Remark: this.state.remark
+                })
+            })
+        })
+
+        }
     }
 
 
@@ -64,19 +122,20 @@ class BankTransfer extends Component {
                             <option value="">Please Select</option>
                             {this.state.BankAcc.map((topic, index) =>
                             <option value={topic} >{topic} </option>)}
+                            <option value="Other">Other Account</option>
                         </FormControl>
                     </FormGroup>
                 <FormGroup>
                         <ControlLabel>Amount:(HKD$)</ControlLabel>
                         <InputGroup>
                             <InputGroup.Addon>$</InputGroup.Addon>
-                            <FormControl type="number" onChange={event => this.setState({ WithdrawAmount: event.target.value })} />
+                            <FormControl type="number" onChange={event => this.setState({ TransferAmount: event.target.value })} />
                         </InputGroup>
                     </FormGroup>
                     <FormGroup>
-                        <ControlLabel>Withdraw Date:</ControlLabel>
+                        <ControlLabel>Transfer Date:</ControlLabel>
                             <DatePicker
-                                selected={this.state.WithdrawDate}
+                                selected={this.state.TransferDate}
                                 onChange={this.SelectDateChange}
                                 showTimeSelect
                                 timeFormat="HH:mm"
@@ -85,12 +144,15 @@ class BankTransfer extends Component {
                                 timeCaption="time"
                             />
                     </FormGroup> 
-                    <br/>
-                    {this.state.BankAmount}
-                    <br/>
+                    <FormGroup>
+                        <ControlLabel>Remarks:</ControlLabel>
+                        <InputGroup>
+                            <FormControl type="text" onChange={event => this.setState({ remark: event.target.value })} />
+                        </InputGroup>
+                    </FormGroup>
                     <Button
                         bsStyle="primary"
-                        onClick={() => this.withdraw(this.state)}
+                        onClick={() => this.transfer(this.state)}
                     >
                         Submit
                     </Button>

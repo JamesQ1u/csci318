@@ -58,12 +58,11 @@ class BankWithdraw extends Component {
                 AfterAmount: Number(BankAmount-this.state.WithdrawAmount),
                 ActionDate: new Date(this.state.WithdrawDate)
             })
-            db.collection("user").doc(this.uid).get()
-        .then(doc => {
-            const Amount = doc.data().TotalAmount
-            db.collection("user").doc(this.uid).update({
-                TotalAmount: Number(Amount-this.state.WithdrawAmount)
-            })
+            this.Ref.get().then(doc => {
+                const CashAmount = doc.data().Cash
+                this.Ref.update({
+                    TotalAmount: Number(Number(CashAmount)+Number(this.state.WithdrawAmount))
+                })
         })
         })
         
@@ -73,7 +72,7 @@ class BankWithdraw extends Component {
         return (
             <div>
                  <FormGroup controlId="formControlsSelect">
-                    <ControlLabel>Your Bank Account</ControlLabel>
+                    <ControlLabel>Your Bank Account:</ControlLabel>
                         <FormControl componentClass="select" placeholder="BankAcc" value={this.state.SelectedBankAcc} onChange={this.SelectBankAccChange}>
                             <option value="">Please Select</option>
                             {this.state.BankAcc.map((topic, index) =>
@@ -99,9 +98,6 @@ class BankWithdraw extends Component {
                                 timeCaption="time"
                             />
                     </FormGroup> 
-                    <br/>
-                    {this.state.BankAmount}
-                    <br/>
                     <Button
                         bsStyle="primary"
                         onClick={() => this.withdraw(this.state)}

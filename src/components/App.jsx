@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { firebaseApp } from '../firebase';
+import { firebaseApp, db } from '../firebase';
 import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
 
 import AddGoal from './AddGoal';
 import AddBankAcc from './AddBankAcc';
 import BankWithdraw from './BankWithdraw';
+import BankTransfer from './BankTransfer';
+import Income from './Income';
 
 
 class App extends Component {
@@ -14,6 +16,9 @@ class App extends Component {
         this.state = {
             showContent: ''
         }
+        this.uid = firebaseApp.auth().currentUser.uid;
+        this.Ref = db.collection('user').doc(this.uid);
+        this.setAcc();
     }
 
     selectShowContent = (showContent) => {
@@ -24,8 +29,23 @@ class App extends Component {
                 return (<AddBankAcc />)
             }else if (showContent === 'BankWithdraw') {
                 return (<BankWithdraw />)
+            }else if (showContent === 'BankTransfer') {
+                return (<BankTransfer />)
+            }else if (showContent === 'Income') {
+                return (<Income />)
             }
         }
+    }
+
+    setAcc(){
+        this.Ref.get().then(doc => {
+            if (!doc.exists) {
+                this.Ref.set({
+                    TotalAmount: Number(0),
+                    Cash: Number(0)
+                })
+        } 
+        })
     }
 
     handleAddGoal(){
@@ -38,6 +58,16 @@ class App extends Component {
 
     handleBankWithdraw(){
         this.setState({ showContent: 'BankWithdraw' })
+
+    }
+
+    handleBankTransfer(){
+        this.setState({ showContent: 'BankTransfer' })
+
+    }
+
+    handleIncome(){
+        this.setState({ showContent: 'Income' })
 
     }
 
@@ -62,9 +92,10 @@ class App extends Component {
                         <NavDropdown eventKey={2} title="Bank" id="basic-nav-dropdown">
                             <MenuItem eventKey={2.1} onClick={() => this.handleAddBankAcc()}>Add Bank Account</MenuItem>
                             <MenuItem eventKey={2.2} onClick={() => this.handleBankWithdraw()}>Withdraw</MenuItem>
+                            <MenuItem eventKey={2.3} onClick={() => this.handleBankTransfer()}>Transfer</MenuItem>
                         </NavDropdown>  
-                        <NavItem eventKey={3}>
-                        User Management
+                        <NavItem eventKey={3} onClick={() => this.handleIncome()}>
+                        Income
                      </NavItem>       
   
                     </Nav>
