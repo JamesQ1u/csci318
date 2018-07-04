@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import { FormGroup, ControlLabel,FormControl, Button, InputGroup } from 'react-bootstrap';
 import { firebaseApp, db } from '../firebase';
 
+import DatePicker from 'react-datepicker';
 import moment from 'moment';
+
+import 'react-datepicker/dist/react-datepicker.css';
 
 class AddBankAcc extends Component {
     constructor(props) {
@@ -11,11 +14,13 @@ class AddBankAcc extends Component {
             SelectedBank: '',
             SelectedAcc: '',
             AccNum: '',
-            Amount: ''
+            Amount: '',
+            CreateDate: moment()
         }
         this.uid = firebaseApp.auth().currentUser.uid;
         this.SelectedBankChange = this.SelectedBankChange.bind(this);
         this.SelectedAccChange = this.SelectedAccChange.bind(this);
+        this.SelectDateChange = this.SelectDateChange.bind(this);
     }
 
     SelectedBankChange(event) {
@@ -26,21 +31,33 @@ class AddBankAcc extends Component {
         this.setState({ SelectedAcc: event.target.value });
     }
 
+    SelectDateChange(date) {
+        this.setState({ CreateDate: date });
+    }
+
     addBankAcc(state) {
         db.collection("user").doc(this.uid).collection('Bank').doc(this.state.AccNum).set({
             BankName: this.state.SelectedBank,
             AccountType: this.state.SelectedAcc,
             AccountNumber: this.state.AccNum,
-            Amount: this.state.Amount
+            Amount: Number(this.state.Amount),
+            CreateDate: new Date(this.state.CreateDate)
         })
-        var date = new Date(moment());
-        db.collection("user").doc(this.uid).collection('Record').doc(date.toUTCString()).set({
+        const date = this.state.CreateDate.toString();
+        db.collection("user").doc(this.uid).collection('Record').doc(date).set({
             Type: 'CreateBankAcc',
             BankName: this.state.SelectedBank,
             AccountType: this.state.SelectedAcc,
             AccountNumber: this.state.AccNum,
-            Amount: this.state.Amount,
-            ActionDate: date
+            Amount: Number(this.state.Amount),
+            ActionDate: new Date(this.state.CreateDate)
+        })
+        db.collection("user").doc(this.uid).get()
+        .then(doc => {
+            const Amount = doc.data().TotalAmount
+            db.collection("user").doc(this.uid).update({
+                TotalAmount: Number(Number(Amount) + Number(this.state.Amount))
+            })
         })
     }
 
@@ -92,6 +109,17 @@ class AddBankAcc extends Component {
                             <FormControl type="number" onChange={event => this.setState({ Amount: event.target.value })} />
                         </InputGroup>
                     </FormGroup>
+                    <FormGroup>
+                        <ControlLabel>Create Date:</ControlLabel>
+                            <DatePicker
+                                selected={this.state.CreateDate}
+                                onChange={this.SelectDateChange}
+                                peekNextMonth
+                                showMonthDropdown
+                                showYearDropdown
+                                dropdownMode="select"
+                            />
+                    </FormGroup> 
                     <Button
                         bsStyle="primary"
                         onClick={() => this.addBankAcc(this.state)}

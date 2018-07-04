@@ -6,27 +6,33 @@ import DatePicker from 'react-datepicker';
 import moment from 'moment';
 
 import 'react-datepicker/dist/react-datepicker.css';
-class BankWithdraw extends Component {
+
+class BankTransfer extends Component {
     constructor(props){
         super(props);
         this.state = {
             BankAcc: [],
-            SelectedBankAcc: '',
-            WithdrawAmount: '',
-            BankAmount: '',
-            WithdrawDate: moment()
+            SelectedOutBankAcc: '',
+            SelectedInBankAcc: '',
+            TransferAmount: '',
+            TransferDate: moment()
         }
         this.uid = firebaseApp.auth().currentUser.uid;
         this.Ref = db.collection('user').doc(this.uid);
         this.getBankAcc();
-        this.SelectBankAccChange = this.SelectBankAccChange.bind(this);
+        this.SelectOutBankAccChange = this.SelectOutBankAccChange.bind(this);
+        this.SelectInBankAccChange = this.SelectInBankAccChange.bind(this);
         this.SelectDateChange = this.SelectDateChange.bind(this);
     }
 
     
 
-    SelectBankAccChange(event){
-        this.setState({ SelectedBankAcc: event.target.value });
+    SelectOutBankAccChange(event){
+        this.setState({ SelectedOutBankAcc: event.target.value });
+    }
+
+    SelectInBankAccChange(event){
+        this.setState({ SelectedInBankAcc: event.target.value });
     }
 
     SelectDateChange(date){
@@ -40,41 +46,21 @@ class BankWithdraw extends Component {
         })
     }
 
-    withdraw(state){
-        const BankAcc = this.state.SelectedBankAcc;
-        this.Ref.collection('Bank').doc(BankAcc).get()
-        .then(doc => {
-            const BankAmount = doc.data().Amount
-            this.setState({ BankAmount })
-            this.Ref.collection('Bank').doc(BankAcc).update({
-                Amount: Number(BankAmount-this.state.WithdrawAmount)
-            })
-            const date = this.state.WithdrawDate.toString();
-            this.Ref.collection('Record').doc(date).set({
-                Type: 'BankWithdraw',
-                AccountNumber: BankAcc,
-                WithdrawAmount: Number(this.state.WithdrawAmount),
-                BeforeAmount: Number(BankAmount),
-                AfterAmount: Number(BankAmount-this.state.WithdrawAmount),
-                ActionDate: new Date(this.state.WithdrawDate)
-            })
-            db.collection("user").doc(this.uid).get()
-        .then(doc => {
-            const Amount = doc.data().TotalAmount
-            db.collection("user").doc(this.uid).update({
-                TotalAmount: Number(Amount-this.state.WithdrawAmount)
-            })
-        })
-        })
-        
-    }
 
     render() {
         return (
             <div>
-                 <FormGroup controlId="formControlsSelect">
-                    <ControlLabel>Your Bank Account</ControlLabel>
-                        <FormControl componentClass="select" placeholder="BankAcc" value={this.state.SelectedBankAcc} onChange={this.SelectBankAccChange}>
+                 <FormGroup>
+                    <ControlLabel>From Account:</ControlLabel>
+                        <FormControl componentClass="select" placeholder="BankAcc" value={this.state.SelectedOutBankAcc} onChange={this.SelectOutBankAccChange}>
+                            <option value="">Please Select</option>
+                            {this.state.BankAcc.map((topic, index) =>
+                            <option value={topic} >{topic} </option>)}
+                        </FormControl>
+                    </FormGroup>
+                <FormGroup>
+                    <ControlLabel>To Account:</ControlLabel>
+                        <FormControl componentClass="select" placeholder="BankAcc" value={this.state.SelectedInBankAcc} onChange={this.SelectInBankAccChange}>
                             <option value="">Please Select</option>
                             {this.state.BankAcc.map((topic, index) =>
                             <option value={topic} >{topic} </option>)}
@@ -114,4 +100,4 @@ class BankWithdraw extends Component {
     }
 
 }
-export default BankWithdraw;
+export default BankTransfer;
