@@ -68,32 +68,32 @@ class AddBankAcc extends Component {
                     <FormGroup controlId="formControlsSelect">
                         <ControlLabel>Bank Name</ControlLabel>
                         <FormControl componentClass="select" placeholder="BankName" value={this.state.SelectedBank} onChange={this.SelectedBankChange}>
-                            <option value="">Please Select</option>
-                            <option value="Standard Chartered">Standard Chartered</option>
-                            <option value="The Hongkong and Shanghai Banking">The Hongkong and Shanghai Banking</option>
-                            <option value="Citibank">Citibank</option>
-                            <option value="JP Morgan Chase Bank">JP Morgan Chase Bank</option>
-                            <option value="China Construction Bank">China Construction Bank</option>
-                            <option value="Bank of China (Hong Kong)">Bank of China (Hong Kong)</option>
-                            <option value="The Bank of East Asia">The Bank of East Asia</option>
-                            <option value="DBS Bank (Hong Kong)">DBS Bank (Hong Kong)</option>
-                            <option value="China CITIC Bank">China CITIC Bank</option>
-                            <option value="Wing Lung Bank">Wing Lung Bank</option>
-                            <option value="OCBC BANK">OCBC BANK</option>
-                            <option value="Chiyu Banking">Chiyu Banking</option>
-                            <option value="Dah Sing Bank">Dah Sing Bank</option>
-                            <option value="Chong Hing Bank">Chong Hing Bank</option>
-                            <option value="Nanyang Commercial Bank">Nanyang Commercial Bank</option>
-                            <option value="Industrial and Commercial Bank of China (Asia)">Industrial and Commercial Bank of China (Asia)</option>
-                            <option value="Tai Sang Bank">Tai Sang Bank</option>
+                            <option key="">Please Select</option>
+                            <option key="Standard Chartered">Standard Chartered</option>
+                            <option key="The Hongkong and Shanghai Banking">The Hongkong and Shanghai Banking</option>
+                            <option key="Citibank">Citibank</option>
+                            <option key="JP Morgan Chase Bank">JP Morgan Chase Bank</option>
+                            <option key="China Construction Bank">China Construction Bank</option>
+                            <option key="Bank of China (Hong Kong)">Bank of China (Hong Kong)</option>
+                            <option key="The Bank of East Asia">The Bank of East Asia</option>
+                            <option key="DBS Bank (Hong Kong)">DBS Bank (Hong Kong)</option>
+                            <option key="China CITIC Bank">China CITIC Bank</option>
+                            <option key="Wing Lung Bank">Wing Lung Bank</option>
+                            <option key="OCBC BANK">OCBC BANK</option>
+                            <option key="Chiyu Banking">Chiyu Banking</option>
+                            <option key="Dah Sing Bank">Dah Sing Bank</option>
+                            <option key="Chong Hing Bank">Chong Hing Bank</option>
+                            <option key="Nanyang Commercial Bank">Nanyang Commercial Bank</option>
+                            <option key="Industrial and Commercial Bank of China (Asia)">Industrial and Commercial Bank of China (Asia)</option>
+                            <option key="Tai Sang Bank">Tai Sang Bank</option>
                         </FormControl>
                     </FormGroup>
                     <FormGroup controlId="formControlsSelect">
                         <ControlLabel>Bank Account Type</ControlLabel>
                         <FormControl componentClass="select" placeholder="Bank Account Type" value={this.state.SelectedAcc} onChange={this.SelectedAccChange}>
-                            <option value="">Please Select</option>
-                            <option value="Saving Account">Saving Account</option>
-                            <option value="Current Account">Current Account</option>
+                            <option key="">Please Select</option>
+                            <option key="Saving Account">Saving Account</option>
+                            <option key="Current Account">Current Account</option>
                         </FormControl>
                     </FormGroup>
                     <FormGroup>

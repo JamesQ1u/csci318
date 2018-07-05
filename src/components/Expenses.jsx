@@ -100,10 +100,10 @@ class Expenses extends Component {
                 <FormGroup>
                     <ControlLabel>Money From:</ControlLabel>
                     <FormControl componentClass="select" value={this.state.Account} onChange={this.AccountChange}>
-                        <option value="">Please Select</option>
-                        <option value="Cash">Cash</option>
+                        <option key="">Please Select</option>
+                        <option key="Cash">Cash</option>
                         {this.state.BankAcc.map((topic, index) =>
-                            <option value={topic} >{topic} </option>)}
+                            <option key={topic} >{topic} </option>)}
                     </FormControl>
                 </FormGroup>
                 <FormGroup>
@@ -116,25 +116,25 @@ class Expenses extends Component {
                 <FormGroup>
                     <ControlLabel>Expense Category:</ControlLabel>
                     <FormControl componentClass="select" value={this.state.ExpenseCategory} onChange={this.CategoryChange}>
-                        <option value="">Please Select</option>
-                        <option value="Food">Salary</option>
-                        <option value="Groceries">Bonus</option>
-                        <option value="Investment">Investment</option>
-                        <option value="Transportation">Transportation</option>
-                        <option value="Utilities">Utilities</option>
-                        <option value="Phone">Phone</option>
-                        <option value="House">SHouse</option>
-                        <option value="Clothes">Clothes</option>
-                        <option value="Car">Car</option>
-                        <option value="Entertainment">Entertainment</option>
-                        <option value="Beauty">Beauty</option>
-                        <option value="Socializing">Socializing</option>
-                        <option value="Book">Book</option>
-                        <option value="Insurance">Insurance</option>
-                        <option value="Tex">Tex</option>
-                        <option value="Health">Health</option>
-                        <option value="Education">Education</option>
-                        <option value="Other">Other</option>
+                        <option key="">Please Select</option>
+                        <option key="Food">Salary</option>
+                        <option key="Groceries">Bonus</option>
+                        <option key="Investment">Investment</option>
+                        <option key="Transportation">Transportation</option>
+                        <option key="Utilities">Utilities</option>
+                        <option key="Phone">Phone</option>
+                        <option key="House">SHouse</option>
+                        <option key="Clothes">Clothes</option>
+                        <option key="Car">Car</option>
+                        <option key="Entertainment">Entertainment</option>
+                        <option key="Beauty">Beauty</option>
+                        <option key="Socializing">Socializing</option>
+                        <option key="Book">Book</option>
+                        <option key="Insurance">Insurance</option>
+                        <option key="Tex">Tex</option>
+                        <option key="Health">Health</option>
+                        <option key="Education">Education</option>
+                        <option key="Other">Other</option>
                     </FormControl>
                 </FormGroup>
                 <FormGroup>

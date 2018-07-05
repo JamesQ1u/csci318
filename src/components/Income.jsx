@@ -100,10 +100,10 @@ class Income extends Component {
                 <FormGroup>
                     <ControlLabel>Income to:</ControlLabel>
                     <FormControl componentClass="select" value={this.state.Account} onChange={this.AccountChange}>
-                        <option value="">Please Select</option>
-                        <option value="Cash">Cash</option>
+                        <option key="">Please Select</option>
+                        <option key="Cash">Cash</option>
                         {this.state.BankAcc.map((topic, index) =>
-                            <option value={topic} >{topic} </option>)}
+                            <option key={topic} >{topic} </option>)}
                     </FormControl>
                 </FormGroup>
                 <FormGroup>
@@ -116,12 +116,12 @@ class Income extends Component {
                 <FormGroup>
                     <ControlLabel>Income Category:</ControlLabel>
                     <FormControl componentClass="select" value={this.state.IncomeCategory} onChange={this.CategoryChange}>
-                        <option value="">Please Select</option>
-                        <option value="Salary">Salary</option>
-                        <option value="Bonus">Bonus</option>
-                        <option value="Investment">Investment</option>
-                        <option value="Sideline">Sideline</option>
-                        <option value="Other">Other</option>
+                        <option key="">Please Select</option>
+                        <option key="Salary">Salary</option>
+                        <option key="Bonus">Bonus</option>
+                        <option key="Investment">Investment</option>
+                        <option key="Sideline">Sideline</option>
+                        <option key="Other">Other</option>
                     </FormControl>
                 </FormGroup>
                 <FormGroup>

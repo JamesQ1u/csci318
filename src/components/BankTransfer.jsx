@@ -111,18 +111,18 @@ class BankTransfer extends Component {
                  <FormGroup>
                     <ControlLabel>From Account:</ControlLabel>
                         <FormControl componentClass="select" placeholder="BankAcc" value={this.state.SelectedOutBankAcc} onChange={this.SelectOutBankAccChange}>
-                            <option value="">Please Select</option>
+                            <option key="">Please Select</option>
                             {this.state.BankAcc.map((topic, index) =>
-                            <option value={topic} >{topic} </option>)}
+                            <option key={topic} >{topic} </option>)}
                         </FormControl>
                     </FormGroup>
                 <FormGroup>
                     <ControlLabel>To Account:</ControlLabel>
                         <FormControl componentClass="select" placeholder="BankAcc" value={this.state.SelectedInBankAcc} onChange={this.SelectInBankAccChange}>
-                            <option value="">Please Select</option>
+                            <option key="">Please Select</option>
                             {this.state.BankAcc.map((topic, index) =>
-                            <option value={topic} >{topic} </option>)}
-                            <option value="Other">Other Account</option>
+                            <option key={topic} >{topic} </option>)}
+                            <option key="Other">Other Account</option>
                         </FormControl>
                     </FormGroup>
                 <FormGroup>

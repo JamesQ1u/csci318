@@ -74,9 +74,9 @@ class BankWithdraw extends Component {
                  <FormGroup controlId="formControlsSelect">
                     <ControlLabel>Your Bank Account:</ControlLabel>
                         <FormControl componentClass="select" placeholder="BankAcc" value={this.state.SelectedBankAcc} onChange={this.SelectBankAccChange}>
-                            <option value="">Please Select</option>
+                            <option key="">Please Select</option>
                             {this.state.BankAcc.map((topic, index) =>
-                            <option value={topic} >{topic} </option>)}
+                            <option key={topic} >{topic} </option>)}
                         </FormControl>
                     </FormGroup>
                 <FormGroup>

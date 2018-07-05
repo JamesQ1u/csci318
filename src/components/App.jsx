@@ -9,6 +9,8 @@ import BankWithdraw from './BankWithdraw';
 import BankTransfer from './BankTransfer';
 import Income from './Income';
 import Expenese from './Expenses';
+import ShowState from './ShowState';
+import ShowHistory from './ShowHistory';
 
 
 class App extends Component {
@@ -117,6 +119,10 @@ class App extends Component {
                      </NavItem>
                     </Nav>
                 </Navbar>
+                <br/>
+                <ShowState/>
+                <br/>
+                <ShowHistory/>
                 <br />
                 {this.selectShowContent(this.state.showContent)}
             </div>
