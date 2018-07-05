@@ -8,9 +8,33 @@ class ShowHistory extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            record:[]
         }
         this.uid = firebaseApp.auth().currentUser.uid;
         this.Ref = db.collection('user').doc(this.uid);
+        this.getData();
+
+    }
+
+    getData() {
+        this.Ref.collection('Record').get()
+            .then(snapshot => {
+                snapshot.forEach(doc => {
+                    let dataSet =
+                        {
+                            date: '',
+                            type: '',
+                            amount: ''
+                        }
+                    dataSet.date = doc.data().ActionDate;
+                    dataSet.type = doc.data().Type;
+                    dataSet.amount = doc.data().Amount;
+                    this.state.record.push(dataSet);
+
+                });
+            })
+        console.log(this.state.record);
+
 
     }
 
@@ -29,12 +53,8 @@ class ShowHistory extends Component {
                     </thead>
                     <tbody>
                         <tr>
-                            <td>1</td>
-                            <td>Table cell</td>
-                            <td>Table cell</td>
-                            <td>Table cell</td>
-                        </tr>
 
+                        </tr>
                     </tbody>
                 </Table>
             </div>

@@ -56,6 +56,7 @@ class Expenses extends Component {
                 })
                 const date = this.state.ExpenseDate.toString();
                 this.Ref.collection('Record').doc(date).set({
+                    TotalAmount: Number(Number(TotalAmount) - Number(this.state.Amount)),
                     Type: 'Expense',
                     From: this.state.Account,
                     Amount: Number(this.state.Amount),
@@ -79,6 +80,7 @@ class Expenses extends Component {
                     })
                     const date = this.state.ExpenseDate.toString();
                     this.Ref.collection('Record').doc(date).set({
+                        TotalAmount: Number(Number(TotalAmount) - Number(this.state.Amount)),
                         Type: 'Expense',
                         From: this.state.Account,
                         Amount: Number(this.state.Amount),

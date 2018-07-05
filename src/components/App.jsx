@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { firebaseApp, db } from '../firebase';
 import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
+import moment from 'moment';
 
 import AddGoal from './AddGoal';
 import AddBankAcc from './AddBankAcc';
@@ -17,7 +18,8 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            showContent: ''
+            showContent: '',
+            Date: moment()
         }
         this.uid = firebaseApp.auth().currentUser.uid;
         this.Ref = db.collection('user').doc(this.uid);
@@ -48,6 +50,12 @@ class App extends Component {
                 this.Ref.set({
                     TotalAmount: Number(0),
                     Cash: Number(0)
+                })
+                const date = this.state.Date.toString();
+                    this.Ref.collection('Record').doc(date).set({
+                    TotalAmount: Number(0),
+                    Type: 'New Account',
+                    ActionDate: new Date(this.state.Date)
                 })
         } 
         })

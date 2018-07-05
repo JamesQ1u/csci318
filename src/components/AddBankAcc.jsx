@@ -43,21 +43,26 @@ class AddBankAcc extends Component {
             Amount: Number(this.state.Amount),
             CreateDate: new Date(this.state.CreateDate)
         })
-        const date = this.state.CreateDate.toString();
-        db.collection("user").doc(this.uid).collection('Record').doc(date).set({
-            Type: 'CreateBankAcc',
-            BankName: this.state.SelectedBank,
-            AccountType: this.state.SelectedAcc,
-            AccountNumber: this.state.AccNum,
-            Amount: Number(this.state.Amount),
-            ActionDate: new Date(this.state.CreateDate)
-        })
         db.collection("user").doc(this.uid).get()
         .then(doc => {
             const Amount = doc.data().TotalAmount
             db.collection("user").doc(this.uid).update({
                 TotalAmount: Number(Number(Amount) + Number(this.state.Amount))
             })
+            db.collection("user").doc(this.uid).get()
+            .then(doc => {
+                const Amount = doc.data().TotalAmount
+            const date = this.state.CreateDate.toString();
+            db.collection("user").doc(this.uid).collection('Record').doc(date).set({
+                TotalAmount: Amount,
+                Type: 'CreateBankAcc',
+                BankName: this.state.SelectedBank,
+                AccountType: this.state.SelectedAcc,
+                AccountNumber: this.state.AccNum,
+                Amount: Number(this.state.Amount),
+                ActionDate: new Date(this.state.CreateDate)
+            })
+        })
         })
     }
 

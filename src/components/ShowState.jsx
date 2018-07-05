@@ -9,14 +9,20 @@ class ShowState extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            myDataSource: {
+            ExpenseData: {
                 chart: {
                     caption: 'Monthly expenses',
                     numberPrefix: '$',
                 },
                 data: []
             },
-            BankAcc: []
+            RecordData: {
+                chart: {
+                    caption: 'Total amount record',
+                    numberPrefix: '$',
+                },
+                data: []
+            },
         }
         
         this.uid = firebaseApp.auth().currentUser.uid;
@@ -37,13 +43,24 @@ class ShowState extends Component {
                         }
                     dataSet.label = doc.data().ExpenseCategory;
                     dataSet.value = String(doc.data().Amount);
-                    this.state.myDataSource.data.push(dataSet);
+                    this.state.ExpenseData.data.push(dataSet);
 
                 });
             })
-        console.log(this.state.myDataSource.data);
+            this.Ref.collection('Record').orderBy('ActionDate').get()
+            .then(snapshot => {
+                snapshot.forEach(doc => {
+                    let dataSet =
+                        {
+                            label: '',
+                            value: ''
+                        }
+                    dataSet.label = doc.data().ActionDate;
+                    dataSet.value = String(doc.data().TotalAmount);
+                    this.state.RecordData.data.push(dataSet);
 
-
+                });
+            })
     }
 
 
@@ -54,7 +71,14 @@ class ShowState extends Component {
                     width="600"
                     height="400"
                     type="pie3d"
-                    dataSource={this.state.myDataSource}
+                    dataSource={this.state.ExpenseData}
+                />
+                <br/>
+                <ReactFC
+                    width="600"
+                    height="400"
+                    type="line"
+                    dataSource={this.state.RecordData}
                 />
             </div>
         )

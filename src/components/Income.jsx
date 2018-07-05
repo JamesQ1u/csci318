@@ -56,9 +56,10 @@ class Income extends Component {
                 })
                 const date = this.state.IncomeDate.toString();
                 this.Ref.collection('Record').doc(date).set({
+                    TotalAmount: Number(Number(TotalAmount) + Number(this.state.IncomeAmount)),
                     Type: 'Income',
                     To: this.state.Account,
-                    IncomeAmount: Number(this.state.IncomeAmount),
+                    Amount: Number(this.state.IncomeAmount),
                     IncomeCategory: this.state.IncomeCategory,
                     BeforeAmount: Number(CashAmount),
                     AfterAmount: Number(Number(CashAmount) + Number(this.state.IncomeAmount)),
@@ -79,9 +80,10 @@ class Income extends Component {
                     })
                     const date = this.state.IncomeDate.toString();
                     this.Ref.collection('Record').doc(date).set({
+                        TotalAmount: Number(Number(TotalAmount) + Number(this.state.IncomeAmount)),
                         Type: 'Income',
                         To: this.state.Account,
-                        IncomeAmount: Number(this.state.IncomeAmount),
+                        Amount: Number(this.state.IncomeAmount),
                         IncomeCategory: this.state.IncomeCategory,
                         BeforeAmount: Number(BankAmount),
                         AfterAmount: Number(Number(BankAmount) + Number(this.state.IncomeAmount)),
@@ -101,7 +103,7 @@ class Income extends Component {
                     <ControlLabel>Income to:</ControlLabel>
                     <FormControl componentClass="select" value={this.state.Account} onChange={this.AccountChange}>
                         <option key="">Please Select</option>
-                        <option key="Cash">Cash</option>
+                        <option value="Cash">Cash</option>
                         {this.state.BankAcc.map((topic, index) =>
                             <option key={topic} >{topic} </option>)}
                     </FormControl>
