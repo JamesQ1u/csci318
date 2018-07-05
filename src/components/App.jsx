@@ -40,6 +40,8 @@ class App extends Component {
                 return (<Income />)
             }else if (showContent === 'Expenese') {
                 return (<Expenese />)
+            }else if (showContent === 'Analysis') {
+                return (<ShowState />)
             }
         }
     }
@@ -89,6 +91,10 @@ class App extends Component {
 
     }
 
+    handleAnalysis(){
+        this.setState({ showContent: 'Analysis' })
+
+    }
 
     signOut(){
         firebaseApp.auth().signOut();
@@ -119,16 +125,17 @@ class App extends Component {
                      <NavItem eventKey={4} onClick={() => this.handleExpenese()}>
                         Expenese
                      </NavItem> 
+                     <NavItem eventKey={5} onClick={() => this.handleAnalysis()}>
+                        Analysis
+                     </NavItem> 
                     </Nav>
                     
                     <Nav pullRight>
-                        <NavItem eventKey={5} onClick={() => this.signOut()}>
+                        <NavItem eventKey={6} onClick={() => this.signOut()}>
                             Sign Out
                      </NavItem>
                     </Nav>
                 </Navbar>
-                <br/>
-                <ShowState/>
                 <br/>
                 <ShowHistory/>
                 <br />

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { firebaseApp, db } from '../firebase';
-import { Table, thead, tr, th, tbody } from 'react-bootstrap';
 
 
 
@@ -8,29 +7,28 @@ class ShowHistory extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            record:[]
+            record:[],
         }
         this.uid = firebaseApp.auth().currentUser.uid;
         this.Ref = db.collection('user').doc(this.uid);
         this.getData();
-
+        this.JsonTable = require('ts-react-json-table');
     }
 
     getData() {
-        this.Ref.collection('Record').get()
-            .then(snapshot => {
-                snapshot.forEach(doc => {
+        this.Ref.collection('Record').orderBy('ActionDate').get()
+            .then(onSnapshot => {
+                onSnapshot.forEach(doc => {
                     let dataSet =
                         {
-                            date: '',
-                            type: '',
-                            amount: ''
+                            Date: '',
+                            Type: '',
+                            Amount: ''
                         }
-                    dataSet.date = doc.data().ActionDate;
-                    dataSet.type = doc.data().Type;
-                    dataSet.amount = doc.data().Amount;
+                    dataSet.Date = String(doc.data().ActionDate);
+                    dataSet.Type = doc.data().Type;
+                    dataSet.Amount = doc.data().Amount;
                     this.state.record.push(dataSet);
-
                 });
             })
         console.log(this.state.record);
@@ -38,25 +36,10 @@ class ShowHistory extends Component {
 
     }
 
-
     render() {
         return (
             <div>
-                <Table responsive>
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Type</th>
-                            <th>Amount</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-
-                        </tr>
-                    </tbody>
-                </Table>
+                <this.JsonTable className="table" rows={ this.state.record } />
             </div>
         )
     }

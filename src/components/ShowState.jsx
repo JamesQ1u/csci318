@@ -34,8 +34,8 @@ class ShowState extends Component {
 
     getData() {
         this.Ref.collection('Record').where("Type", "==", "Expense").get()
-            .then(snapshot => {
-                snapshot.forEach(doc => {
+            .then(onSnapshot => {
+                onSnapshot.forEach(doc => {
                     let dataSet =
                         {
                             label: '',
@@ -75,7 +75,7 @@ class ShowState extends Component {
                 />
                 <br/>
                 <ReactFC
-                    width="600"
+                    width="700"
                     height="400"
                     type="line"
                     dataSource={this.state.RecordData}
