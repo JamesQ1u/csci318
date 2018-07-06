@@ -96,7 +96,7 @@ class BankTransfer extends Component {
                                     Type: 'BankTransfer',
                                     FromAccount: this.state.SelectedOutBankAcc,
                                     ToAccount: this.state.SelectedInBankAcc,
-                                    TransferAmount: Number(this.state.TransferAmount),
+                                    Amount: Number(this.state.TransferAmount),
                                     BeforeAmount: Number(FromBankAmount),
                                     AfterAmount: Number(FromBankAmount - this.state.TransferAmount),
                                     ActionDate: new Date(this.state.TransferDate),

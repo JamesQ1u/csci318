@@ -42,6 +42,8 @@ class App extends Component {
                 return (<Expenese />)
             }else if (showContent === 'Analysis') {
                 return (<ShowState />)
+            } else if (showContent === 'History') {
+                return (<ShowHistory/>)
             }
         }
     }
@@ -96,6 +98,10 @@ class App extends Component {
 
     }
 
+    handleHistory(){
+        this.setState({ showContent: 'History' })
+
+    }
     signOut(){
         firebaseApp.auth().signOut();
     }
@@ -110,9 +116,11 @@ class App extends Component {
                         </Navbar.Brand>
                     </Navbar.Header>
                     <Nav>
-                        <NavItem eventKey={1} onClick={() => this.handleAddGoal()}>
-                        Add Goal
-                     </NavItem>
+                    <NavDropdown eventKey={1} title="Goal" id="basic-nav-dropdown">
+                            <MenuItem eventKey={1.1} onClick={() => this.handleAddGoal()}>Add Goal</MenuItem>
+                            <MenuItem eventKey={1.2} onClick={() => this.handleBankWithdraw()}>Withdraw</MenuItem>
+                            <MenuItem eventKey={1.3} onClick={() => this.handleBankTransfer()}>Transfer</MenuItem>
+                        </NavDropdown> 
                        
                         <NavDropdown eventKey={2} title="Bank" id="basic-nav-dropdown">
                             <MenuItem eventKey={2.1} onClick={() => this.handleAddBankAcc()}>Add Bank Account</MenuItem>
@@ -121,23 +129,24 @@ class App extends Component {
                         </NavDropdown>  
                         <NavItem eventKey={3} onClick={() => this.handleIncome()}>
                         Income
-                     </NavItem>       
-                     <NavItem eventKey={4} onClick={() => this.handleExpenese()}>
-                        Expenese
-                     </NavItem> 
-                     <NavItem eventKey={5} onClick={() => this.handleAnalysis()}>
-                        Analysis
-                     </NavItem> 
+                     </NavItem>   
+                     <NavDropdown eventKey={4} title="Expenese" id="basic-nav-dropdown">
+                            <MenuItem eventKey={4.1} onClick={() => this.handleExpenese()}>Add Expenese</MenuItem>
+                            <MenuItem eventKey={4.2} onClick={() => this.handleAnalysis()}>Expenese Analysis</MenuItem>
+                        </NavDropdown>      
+                     <NavItem eventKey={5} onClick={() => this.handleHistory()}>
+                        Record
+                     </NavItem>
                     </Nav>
                     
                     <Nav pullRight>
-                        <NavItem eventKey={6} onClick={() => this.signOut()}>
+                        <NavItem eventKey={7} onClick={() => this.signOut()}>
                             Sign Out
                      </NavItem>
                     </Nav>
                 </Navbar>
                 <br/>
-                <ShowHistory/>
+
                 <br />
                 {this.selectShowContent(this.state.showContent)}
             </div>
