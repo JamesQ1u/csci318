@@ -10,8 +10,10 @@ import BankWithdraw from './BankWithdraw';
 import BankTransfer from './BankTransfer';
 import Income from './Income';
 import Expenese from './Expenses';
+import ShowGoal from './ShowGoal';
 import ShowState from './ShowState';
 import ShowHistory from './ShowHistory';
+import ShowUserAmount from './ShowUserAmount';
 
 
 class App extends Component {
@@ -44,7 +46,9 @@ class App extends Component {
                 return (<ShowState />)
             } else if (showContent === 'History') {
                 return (<ShowHistory/>)
-            }
+            }else if (showContent === 'ShowGoal') {
+                return ( <ShowGoal />)
+            }                
         }
     }
 
@@ -102,6 +106,10 @@ class App extends Component {
         this.setState({ showContent: 'History' })
 
     }
+    handleShowGoal(){
+        this.setState({ showContent: 'ShowGoal' })
+
+    }
     signOut(){
         firebaseApp.auth().signOut();
     }
@@ -118,8 +126,7 @@ class App extends Component {
                     <Nav>
                     <NavDropdown eventKey={1} title="Goal" id="basic-nav-dropdown">
                             <MenuItem eventKey={1.1} onClick={() => this.handleAddGoal()}>Add Goal</MenuItem>
-                            <MenuItem eventKey={1.2} onClick={() => this.handleBankWithdraw()}>Withdraw</MenuItem>
-                            <MenuItem eventKey={1.3} onClick={() => this.handleBankTransfer()}>Transfer</MenuItem>
+                            <MenuItem eventKey={1.1} onClick={() => this.handleShowGoal()}>My Goal</MenuItem>
                         </NavDropdown> 
                        
                         <NavDropdown eventKey={2} title="Bank" id="basic-nav-dropdown">
@@ -146,8 +153,8 @@ class App extends Component {
                     </Nav>
                 </Navbar>
                 <br/>
-
-                <br />
+                    <ShowUserAmount/>
+                    <br/>
                 {this.selectShowContent(this.state.showContent)}
             </div>
         )
