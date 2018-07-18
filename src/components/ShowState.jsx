@@ -33,34 +33,10 @@ class ShowState extends Component {
     }
 
     getData() {
-        this.Ref.collection('Record').where("Type", "==", "Expense").get()
-            .then(onSnapshot => {
-                onSnapshot.forEach(doc => {
-                    let dataSet =
-                        {
-                            label: '',
-                            value: ''
-                        }
-                    dataSet.label = doc.data().ExpenseCategory;
-                    dataSet.value = String(doc.data().Amount);
-                    this.state.ExpenseData.data.push(dataSet);
-
-                });
-            })
-            this.Ref.collection('Record').orderBy('ActionDate').get()
-            .then(snapshot => {
-                snapshot.forEach(doc => {
-                    let dataSet =
-                        {
-                            label: '',
-                            value: ''
-                        }
-                    dataSet.label = doc.data().ActionDate;
-                    dataSet.value = String(doc.data().TotalAmount);
-                    this.state.RecordData.data.push(dataSet);
-
-                });
-            })
+             // eslint-disable-next-line
+            this.state.ExpenseData.data = JSON.parse(sessionStorage.getItem("ExpenseData"))
+            // eslint-disable-next-line
+            this.state.RecordData.data = JSON.parse(sessionStorage.getItem("RecordData"))
     }
 
 

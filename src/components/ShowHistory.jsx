@@ -22,21 +22,8 @@ class ShowHistory extends Component {
     }
 
     getData() {
-        this.Ref.collection('Record').orderBy('ActionDate').get()
-            .then(onSnapshot => {
-                onSnapshot.forEach(doc => {
-                    let dataSet =
-                        {
-                            Date: '',
-                            Type: '',
-                            Amount: ''
-                        }
-                    dataSet.Date = doc.id;
-                    dataSet.Type = doc.data().Type;
-                    dataSet.Amount = doc.data().Amount;
-                    this.state.record.push(dataSet);
-                });
-            })
+        // eslint-disable-next-line
+        this.state.record= JSON.parse(sessionStorage.getItem("userRecord"))
     }
 
 

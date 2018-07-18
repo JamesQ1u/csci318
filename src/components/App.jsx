@@ -21,11 +21,16 @@ class App extends Component {
         super(props);
         this.state = {
             showContent: '',
-            Date: moment()
-        }
+            Date: moment(), 
+            record: [],
+            ExpenseData: [],
+            RecordData: []
+            }
         this.uid = firebaseApp.auth().currentUser.uid;
         this.Ref = db.collection('user').doc(this.uid);
         this.setAcc();
+        this.getRecord();
+        this.getAN();
     }
 
     selectShowContent = (showContent) => {
@@ -43,13 +48,59 @@ class App extends Component {
             }else if (showContent === 'Expenese') {
                 return (<Expenese />)
             }else if (showContent === 'Analysis') {
+                sessionStorage.setItem("userRecord", JSON.stringify(this.state.record))
                 return (<ShowState />)
             } else if (showContent === 'History') {
+                sessionStorage.setItem("ExpenseData", JSON.stringify(this.state.ExpenseData))
+                sessionStorage.setItem("RecordData", JSON.stringify(this.state.RecordData))
                 return (<ShowHistory/>)
             }else if (showContent === 'ShowGoal') {
                 return ( <ShowGoal />)
             }                
         }
+    }
+
+    getRecord(){
+        this.Ref.collection('Record').orderBy('ActionDate').get()
+            .then(onSnapshot => {
+                onSnapshot.forEach(doc => {
+                    let dataSet =
+                        {
+                            Date: '',
+                            Type: '',
+                            Amount: ''
+                        }
+                        let dataSet2 =
+                        {
+                            label: '',
+                            value: ''
+                        }
+                    dataSet.Date = doc.id;
+                    dataSet.Type = doc.data().Type;
+                    dataSet.Amount = doc.data().Amount;
+                    dataSet2.label = doc.data().ActionDate;
+                    dataSet2.value = String(doc.data().TotalAmount);
+                    this.state.record.push(dataSet);
+                    this.state.RecordData.push(dataSet2);
+                });
+            })
+    }
+
+    getAN(){
+        this.Ref.collection('Record').where("Type", "==", "Expense").get()
+            .then(onSnapshot => {
+                onSnapshot.forEach(doc => {
+                    let dataSet =
+                        {
+                            label: '',
+                            value: ''
+                        }
+                    dataSet.label = doc.data().ExpenseCategory;
+                    dataSet.value = String(doc.data().Amount);
+                    this.state.ExpenseData.push(dataSet);
+
+                });
+            })
     }
 
     setAcc(){
