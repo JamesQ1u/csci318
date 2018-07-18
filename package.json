@@ -17,7 +17,6 @@
     "react-router": "^3.2.1",
     "react-scripts": "1.1.4",
     "redux": "^4.0.0",
-    "simple-flexbox": "^1.2.0",
     "ts-react-json-table": "^0.1.1"
   },
   "scripts": {

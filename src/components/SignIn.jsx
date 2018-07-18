@@ -34,6 +34,19 @@ class SignIn extends Component {
         return (
             <div className="main">
                 <h3>Please Log In, or <Link to={'/signup'}>Sign Up</Link></h3>
+                <div class="row">
+                    <div className="col-xs-6 col-sm-6 col-md-6">
+                        <a href="" class="btn btn-lg btn-primary btn-block">Facebook</a>
+                    </div>
+                    <div className="col-xs-6 col-sm-6 col-md-6">
+                        <a href="" class="btn btn-lg btn-info btn-block">Google</a>
+                    </div>
+                </div>
+                <div className="login-or">
+                    <hr className="hr-or"></hr>
+                        <span className="span-or">or</span>
+                        </div>
+
                     <div className="form-group">
                     Email:
                     <br/>
