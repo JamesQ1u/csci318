@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Link } from 'react-router';
 import { firebaseApp } from '../firebase';
 
+import '../css/Signin.css'
+
 class SignUp extends Component {
     constructor(props){
         super(props);
@@ -26,9 +28,11 @@ class SignUp extends Component {
     
     render(){
          return (
-            <div className="form-inline" style={{margin: '5%'}}>
+            <div className="main">
                 <h2>Sign Up</h2>
                 <div className="form-group">
+                Email:
+                    <br/>
                     <input
                         className="form-control"
                         type="text"
@@ -36,6 +40,9 @@ class SignUp extends Component {
                         placeholder="email"
                         onChange = {event => this.setState({email: event.target.value})}
                     />
+                    <br/>
+                        Password:
+                        <br/>
                     <input
                         className="form-control"
                         type="password"
@@ -51,9 +58,14 @@ class SignUp extends Component {
                     >
                         Sign Up
                     </button>
+                    <span>               </span>
+                    <Link to = {'/signin'}> <button
+                        className="btn btn-primary" >
+                        Sign in page
+                        </button></Link>
                 </div>
                 <div>{this.state.error.message}</div>
-                <div><Link to = {'/signin'}> Sign in page</Link></div>
+
             </div>
          )
      }
